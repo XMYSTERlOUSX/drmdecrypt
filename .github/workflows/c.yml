@@ -16,3 +16,16 @@ jobs:
       env:
         CC: ${{ matrix.compiler }}
       run: make
+
+    - name: Install Testsuite dependencies (ubuntu)
+      if: matrix.os == 'ubuntu-latest'
+      run: sudo apt-get install libav
+
+    - name: Install Testsuite dependencies (macos)
+      if: matrix.os == 'macos-latest'
+      run: brew install libav
+
+    - name: Testsuite
+      env:
+        CC: ${{ matrix.compiler }}
+      run: make test

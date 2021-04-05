@@ -60,5 +60,9 @@ all:	drmdecrypt
 
 drmdecrypt:	$(OBJS)
 
+test:	drmdecrypt
+	$(MAKE) -C testsuite
+
 clean:
 	rm -f *.o *.core drmdecrypt drmdecrypt.exe
+	$(MAKE) -C testsuite clean

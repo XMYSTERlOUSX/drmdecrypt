@@ -1,0 +1,40 @@
+# drmdecrypt testsuite
+#
+# This testsuite tries to decrypt recordings using drmdecrypt and
+# then stores frames as png.
+#
+# If you want to add your recordings to the testsuite try to keep
+# the recordings at 10-15 sec length.
+#
+# dependencies: libav
+
+DRMDECRYPT?=	../drmdecrypt
+
+TESTS=	UE40C6820/20210405094135.png \
+	UE40C6820/20210405094210.png \
+	UE40C6820/20210405094256.png \
+	UE40C6820/20210405094338.png \
+	UE40C6820/20210405094407.png \
+	UE40C6820/20210405094530.png \
+	UE40C6820/20210405094651.png \
+	UE40C6820/20210405094739.png \
+	UE40C6820/20210405094821.png \
+	UE40C6820/20210405094858.png \
+	UE40C6820/20210405094941.png \
+	UE40C6820/20210405095022.png \
+	UE40C6820/20210405095109.png \
+	UE40C6820/20210405095155.png
+
+all:	$(TESTS)
+
+%.ts:	%.srf
+	$(DRMDECRYPT) $<
+	mv $(<:.srf=)*.ts $@
+
+%.png:	%.ts
+	avconv -i $< -r 1 -f image2 -vframes 50 -update 1 $@
+
+clean:
+	rm -f */*.ts */*.png
+
+.PHONY: all clean
