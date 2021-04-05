@@ -18,11 +18,11 @@ jobs:
       run: make
 
     - name: Install Testsuite dependencies (ubuntu)
-      if: matrix.os == 'ubuntu-latest'
+      if: matrix.operating-system == 'ubuntu-latest'
       run: sudo apt-get install libav
 
     - name: Install Testsuite dependencies (macos)
-      if: matrix.os == 'macos-latest'
+      if: matrix.operating-system == 'macos-latest'
       run: brew install libav
 
     - name: Testsuite
