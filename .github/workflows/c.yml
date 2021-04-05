@@ -19,7 +19,7 @@ jobs:
 
     - name: Install Testsuite dependencies (ubuntu)
       if: matrix.operating-system == 'ubuntu-latest'
-      run: sudo apt-get install libav
+      run: sudo apt-get install libav-tools
 
     - name: Install Testsuite dependencies (macos)
       if: matrix.operating-system == 'macos-latest'
