@@ -6,7 +6,7 @@
 # If you want to add your recordings to the testsuite try to keep
 # the recordings at 10-15 sec length.
 #
-# dependencies: libav
+# dependencies: ffmpeg
 
 DRMDECRYPT?=	../drmdecrypt
 
@@ -32,7 +32,7 @@ all:	$(TESTS)
 	mv $(<:.srf=)*.ts $@
 
 %.png:	%.ts
-	avconv -i $< -r 1 -f image2 -vframes 50 -update 1 $@
+	ffmpeg -i $< -ss 00:00:05 -vframes 1 $@
 
 clean:
 	rm -f */*.ts */*.png
