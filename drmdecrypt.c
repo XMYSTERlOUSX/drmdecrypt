@@ -290,7 +290,7 @@ int decode_packet(unsigned char *data)
    offset=4;
 
    /* skip adaption field */
-   if(data[3] & 0x20)
+   if((data[3] & 0x20) == 0x01)
       offset += (data[4]+1);
 
    /* remove scrambling bits */
