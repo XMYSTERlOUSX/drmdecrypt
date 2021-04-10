@@ -282,10 +282,10 @@ int decode_packet(unsigned char *data)
 
    /* only process scrambled content */
    if(((data[3] & 0xC0) != 0xC0) && ((data[3] & 0xC0) != 0x80) && ((data[3] & 0xC0) != 0x40))
-     return 1;
+      return 1;
 
    if(data[3] & 0x20)
-	   trace(TRC_DEBUG, "Adaptation Field length: 0x%x", data[4]+1);
+      trace(TRC_DEBUG, "Adaptation Field length: 0x%x", data[4]+1);
 
    offset=4;
 
