@@ -281,7 +281,7 @@ int decode_packet(unsigned char *data)
    trace(TRC_DEBUG, "Continuity counter    : 0x%x", data[3] & 0x0f);
 
    /* only process scrambled content */
-   if(((data[3] & 0xC0) != 0xC0) && ((data[3] & 0xC0) != 0x80))
+   if(((data[3] & 0xC0) != 0xC0) && ((data[3] & 0xC0) != 0x80) && ((data[3] & 0xC0) != 0x40))
      return 1;
 
    if(data[3] & 0x20)
