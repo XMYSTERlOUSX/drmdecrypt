@@ -15,18 +15,17 @@ features.
 
 ## Features
 - Reading title and channel from .inf file
-- Bulk decoding multiple files
 - AES-NI support (5x faster) (x86_64 only)
 
 
 ## Usage
 
 ```
-Usage: drmdecrypt [-dqvx][-k keyfile][-o outdir] infile.srf ...
+Usage: drmdecrypt [-dqvx][-k keyfile][-o outfile.ts] infile.srf
 Options:
    -d         Show debugging output
    -k keyfile Use custom key file instead of mdb
-   -o outdir  Output directory
+   -o outfile Output file
    -q         Be quiet. Only error output.
    -v         Version information
    -x         Disable AES-NI support

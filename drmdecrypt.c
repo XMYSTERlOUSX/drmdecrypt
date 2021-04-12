@@ -304,7 +304,7 @@ int decode_packet(unsigned char *data)
    return 0;
 }
 
-int decryptsrf(char *srffile, char *inkeyfile, char *outdir)
+int decryptsrf(char *srffile, char *inkeyfile, char *inoutfile)
 {
    char inffile[PATH_MAX];
    char outfile[PATH_MAX];
@@ -339,9 +339,12 @@ int decryptsrf(char *srffile, char *inkeyfile, char *outdir)
    if (ismdb)
       free(keyfile);
 
-   /* generate outfile name based on title from .inf file */
-   strcpy(outfile, outdir);
-   if(genoutfilename(outfile, inffile) != 0)
+   /* if -o was not set generate outfile name based on title from .inf file */
+   if(strlen(inoutfile) > 0)
+   {
+      strcpy(outfile, inoutfile);
+   }
+   else if(genoutfilename(outfile, inffile) != 0)
    {
       strcat(outfile, srffile);
       filename(outfile, "ts");
@@ -432,11 +435,11 @@ resync:
 
 void usage(void)
 {
-   fprintf(stderr, "Usage: drmdecrypt [-dqvx][-k keyfile][-o outdir] infile.srf ...\n");
+   fprintf(stderr, "Usage: drmdecrypt [-dqvx][-k keyfile][-o outfile.ts] infile.srf\n");
    fprintf(stderr, "Options:\n");
    fprintf(stderr, "   -d         Show debugging output\n");
    fprintf(stderr, "   -k keyfile Use custom key file instead of mdb\n");
-   fprintf(stderr, "   -o outdir  Output directory\n");
+   fprintf(stderr, "   -o outfile Output file\n");
    fprintf(stderr, "   -q         Be quiet. Only error output.\n");
    fprintf(stderr, "   -v         Version information\n");
    fprintf(stderr, "   -x         Disable AES-NI support\n");
@@ -445,11 +448,11 @@ void usage(void)
 
 int main(int argc, char *argv[])
 {
-   char outdir[PATH_MAX];
+   char outfile[PATH_MAX];
    char keyfile[PATH_MAX];
    int ch;
 
-   memset(outdir, '\0', sizeof(outdir));
+   memset(outfile, '\0', sizeof(outfile));
    memset(keyfile, '\0', sizeof(keyfile));
 
    enable_aesni = Check_CPU_support_AES();
@@ -466,7 +469,7 @@ int main(int argc, char *argv[])
 	    strncpy(keyfile, optarg, sizeof(keyfile));
 	    break;
          case 'o':
-            strncpy(outdir, optarg, sizeof(outdir));
+            strncpy(outfile, optarg, sizeof(outfile));
             break;
          case 'q':
             if(tracelevel < TRC_ERROR)
@@ -492,25 +495,8 @@ int main(int argc, char *argv[])
       exit(EXIT_FAILURE);
    }
 
-   /* set and verify outdir */
-   if(strlen(outdir) < 1)
-   {
-      strcpy(outdir, argv[optind]);
-      strcpy(outdir, dirname(outdir));
-   }
-
-   if(outdir[strlen(outdir)-1] != '/')
-      strcat(outdir, "/");
-
    trace(TRC_INFO, "AES-NI CPU support %s", enable_aesni ? "enabled" : "disabled");
 
-   do
-   {
-      if(decryptsrf(argv[optind], keyfile, outdir) != 0)
-         break;
-   }
-   while(++optind < argc);
-
-   return 0;
+   return decryptsrf(argv[optind], keyfile, outfile);
 }
 
