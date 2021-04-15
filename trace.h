@@ -14,15 +14,10 @@ enum {
    TRC_ERROR
 };
 
-static int tracelevel = TRC_WARN;
+static int tracelevel = TRC_INFO;
 
 #define trace(L, M, ...) \
    if(L >= tracelevel) { \
-      if (tracelevel == 0) { \
-         fprintf(stderr, "%s %s:%d: " M "\n", L == 0 ? "DEBUG" : L == 1 ? "INFO" : L == 2 ? "WARN" : "ERROR", __FILE__, __LINE__, ##__VA_ARGS__); \
-      } \
-      else { \
-         fprintf(stderr, "%s " M "\n", L == 0 ? "DEBUG" : L == 1 ? "INFO" : L == 2 ? "WARN" : "ERROR", ##__VA_ARGS__); \
-      } \
+      fprintf(stdout, "%s " M "\n", L == TRC_DEBUG ? "DEBUG" : L == TRC_INFO ? "INFO" : L == TRC_WARN ? "WARN" : "ERROR", ##__VA_ARGS__); \
    }
 
